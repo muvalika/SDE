@@ -1,0 +1,31 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        // Edge case: empty string
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        // Use HashSet to track characters in current window
+        HashSet<Character> window = new HashSet<>();
+        
+        int maxLength = 0;
+        int left = 0;
+        int right = 0;
+        
+        while (right < s.length()) {
+            // If character not in set, add it and expand window
+            if (!window.contains(s.charAt(right))) {
+                window.add(s.charAt(right));
+                maxLength = Math.max(maxLength, right - left + 1);
+                right++;
+            } 
+            // If character in set, remove left character and shrink window
+            else {
+                window.remove(s.charAt(left));
+                left++;
+            }
+        }
+        
+        return maxLength;
+    }
+}
