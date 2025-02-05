@@ -1,0 +1,66 @@
+class Solution {
+    public int myAtoi(String s) {
+        // Base case: empty string
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        int index = 0;
+        int length = s.length();
+        int sign = 1;
+        long result = 0;  // Using long to handle overflow
+
+        // Step 1: Skip leading whitespace
+        while (index < length && s.charAt(index) == ' ') {
+            index++;
+        }
+
+        // Check if we've reached the end
+        if (index >= length) {
+            return 0;
+        }
+
+        // Step 2: Check sign
+        if (s.charAt(index) == '+' || s.charAt(index) == '-') {
+            sign = (s.charAt(index) == '+') ? 1 : -1;
+            index++;
+        }
+
+        // Step 3: Convert digits and handle overflow
+        while (index < length) {
+            char currentChar = s.charAt(index);
+            
+            // Break if non-digit character
+            if (!Character.isDigit(currentChar)) {
+                break;
+            }
+
+            // Convert char to digit and add to result
+            result = result * 10 + (currentChar - '0');
+
+            // Check for overflow
+            if (sign == 1 && result > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            }
+            if (sign == -1 && -result < Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+
+            index++;
+        }
+
+        return (int) (sign * result);
+    }
+
+    // Test method
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        // Test cases
+        System.out.println("Test 1: " + solution.myAtoi("42")); // Expected: 42
+        System.out.println("Test 2: " + solution.myAtoi("   -42")); // Expected: -42
+        System.out.println("Test 3: " + solution.myAtoi("4193 with words")); // Expected: 4193
+        System.out.println("Test 4: " + solution.myAtoi("words and 987")); // Expected: 0
+        System.out.println("Test 5: " + solution.myAtoi("-91283472332")); // Expected: -2147483648 (MIN_VALUE)
+    }
+}
