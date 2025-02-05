@@ -1,0 +1,58 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        // If numRows is 1 or string length is less than numRows
+        // return original string
+        if (numRows == 1 || s.length() <= numRows) {
+            return s;
+        }
+
+        // Create StringBuilder array to store each row
+        StringBuilder[] rows = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++) {
+            rows[i] = new StringBuilder();
+        }
+
+        // Variables to track current position
+        int currentRow = 0;
+        boolean goingDown = false;
+
+        // Process each character in the string
+        for (char c : s.toCharArray()) {
+            // Add current character to current row
+            rows[currentRow].append(c);
+
+            // If we hit the top or bottom row, change direction
+            if (currentRow == 0 || currentRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+
+            // Move to next row based on direction
+            currentRow += goingDown ? 1 : -1;
+        }
+
+        // Combine all rows into final result
+        StringBuilder result = new StringBuilder();
+        for (StringBuilder row : rows) {
+            result.append(row);
+        }
+
+        return result.toString();
+    }
+
+    // Test method to verify solution
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        // Test case 1: "PAYPALHIRING" with 3 rows
+        System.out.println("Test 1: " + solution.convert("PAYPALHIRING", 3));
+        // Expected: "PAHNAPLSIIGYR"
+
+        // Test case 2: "PAYPALHIRING" with 4 rows
+        System.out.println("Test 2: " + solution.convert("PAYPALHIRING", 4));
+        // Expected: "PINALSIGYAHRP"
+
+        // Test case 3: Single row
+        System.out.println("Test 3: " + solution.convert("PAYPALHIRING", 1));
+        // Expected: "PAYPALHIRING"
+    }
+}
